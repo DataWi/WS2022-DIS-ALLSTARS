@@ -12,9 +12,11 @@ import java.util.Scanner;
 import java.util.concurrent.TimeoutException;
 
 public class MessageService {
-    private ConnectionFactory factory = new ConnectionFactory();
+    ConnectionFactory factory = new ConnectionFactory();
+
 
     public boolean sendMessage(String to, String message, String customer_id) throws Exception {
+        factory.setHost("localhost");
         factory.setPort(30003);
         message = customer_id + " " + message;
         try (Connection connection = factory.newConnection();
@@ -29,14 +31,15 @@ public class MessageService {
     }
 
     public void listen(String[] argv)  throws IOException, TimeoutException {
-        factory.setPort(30083);
+        factory.setHost("localhost");
+        factory.setPort(30003);
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
 
         channel.exchangeDeclare("spring_app", "direct");
-
-
         String queueName = channel.queueDeclare().getQueue();
+
+        System.out.println(" [x] Dispatcher listening to  '" + queueName + "'");
         for (String bindingKey : argv) {
             channel.queueBind(queueName, "spring_app", bindingKey);
         }
@@ -45,11 +48,11 @@ public class MessageService {
             String message = new String(delivery.getBody(), StandardCharsets.UTF_8);
             System.out.println(" [x] Received '" + message + "'");
             try {
-                DistpatchingController.dispatch(Integer.valueOf(message));
+                DistpatchingController.dispatch(message);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         };
-        channel.basicConsume("spring_app", true, deliverCallback, consumerTag -> { });
+        channel.basicConsume(queueName, true, deliverCallback, consumerTag -> { });
     }
 }

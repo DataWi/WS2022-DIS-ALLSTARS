@@ -11,7 +11,6 @@ import java.util.concurrent.TimeoutException;
 public class PdfGeneratorApplication {
 
     public static void main(String[] args) throws IOException, TimeoutException {
-        SpringApplication.run(PdfGeneratorApplication.class, args);
         PDFGeneratorController.run();
     }
 

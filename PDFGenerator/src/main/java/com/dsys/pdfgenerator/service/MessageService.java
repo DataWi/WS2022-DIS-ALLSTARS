@@ -17,6 +17,7 @@ public class MessageService {
     private ConnectionFactory factory = new ConnectionFactory();
 
     public void listen(String[] argv)  throws IOException, TimeoutException {
+        factory.setHost("localhost");
         factory.setPort(30003);
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
@@ -39,6 +40,7 @@ public class MessageService {
                 throw new RuntimeException(e);
             }
         };
-        channel.basicConsume("spring_app", true, deliverCallback, consumerTag -> { });
+        System.out.println(" [x] PDF Generator listening to  '" + queueName + "'");
+        channel.basicConsume(queueName, true, deliverCallback, consumerTag -> { });
     }
 }

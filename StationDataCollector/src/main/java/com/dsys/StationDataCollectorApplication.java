@@ -11,7 +11,6 @@ import java.util.concurrent.TimeoutException;
 public class StationDataCollectorApplication {
 
     public static void main(String[] args) throws IOException, TimeoutException {
-        SpringApplication.run(StationDataCollectorApplication.class, args);
         CollectionController.run();
     }
 

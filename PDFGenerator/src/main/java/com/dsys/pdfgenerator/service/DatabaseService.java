@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class DatabaseService {
     private static Connection connect() throws SQLException {
-        String connectionString="jdbc:postgresql://localhost:30002/customer";
+        String connectionString="jdbc:postgresql://localhost:30001/customerdb";
         return DriverManager.getConnection(connectionString, "postgres", "postgres");
     }
 

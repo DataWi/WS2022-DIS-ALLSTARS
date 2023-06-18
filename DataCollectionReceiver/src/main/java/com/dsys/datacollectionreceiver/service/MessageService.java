@@ -15,6 +15,7 @@ public class MessageService {
 
 
     public boolean sendMessage(String to, String message) throws Exception {
+        factory.setHost("localhost");
         factory.setPort(30003);
         try (Connection connection = factory.newConnection();
              Channel channel = connection.createChannel()) {
@@ -29,6 +30,7 @@ public class MessageService {
     }
 
     public void listen(String[] argv)  throws IOException, TimeoutException {
+        factory.setHost("localhost");
         factory.setPort(30003);
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
@@ -46,11 +48,12 @@ public class MessageService {
             String[] message_info = message.split(" ");
             System.out.println(" [x] Received '" + message + "'");
             try {
-                StationDataController.collect(message_info[1], message_info[0]);
+                StationDataController.collect(message_info[0], message_info[1]);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         };
-        channel.basicConsume("spring_app", true, deliverCallback, consumerTag -> { });
+        System.out.println(" [x] Collection receiver listening to  '" + queueName + "'");
+        channel.basicConsume(queueName, true, deliverCallback, consumerTag -> { });
     }
 }

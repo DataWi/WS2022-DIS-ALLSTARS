@@ -18,20 +18,21 @@ public class CollectionController {
         subscribe[0] = "data_collector";
         messageService.listen(subscribe);
     }
-    public static void collect(int customer_id ,String url) throws SQLException {
+    public static void collect(String customer_id ,String url) throws SQLException {
         ArrayList<Station> stations =  databaseService.getStations(customer_id, url);
         stations.forEach(station -> {
             try {
-                messageService.sendMessage("collection_receiver", station.getId() + " " +station.getKwh(), ""+customer_id);
+                messageService.sendMessage("collection_receiver", station.getId() + " " +station.getKwh(), customer_id);
             } catch (Exception e) {
                 throw new RuntimeException(e);
-            } finally {
-                try {
-                    messageService.sendMessage("collection_receiver", "end", ""+customer_id);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
             }
         });
     };
+    public static void finalize(String customer_id) {
+        try {
+            messageService.sendMessage("collection_receiver", "finished", customer_id);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

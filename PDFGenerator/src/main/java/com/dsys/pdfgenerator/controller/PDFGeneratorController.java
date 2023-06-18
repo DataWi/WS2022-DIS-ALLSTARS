@@ -24,9 +24,9 @@ public class PDFGeneratorController {
         messageService.listen(subscribe);
     }
 
-    public static void print(String[] message) throws SQLException {
+    public static void print(String[] message) throws SQLException, DocumentException, FileNotFoundException {
         Customer customer;
-        Print print;
+        Print print = null;
         if (message[0].equals("start")) {
             customer = databaseService.getCustomer(message[1]);
             print = new Print(customer, new ArrayList<>());

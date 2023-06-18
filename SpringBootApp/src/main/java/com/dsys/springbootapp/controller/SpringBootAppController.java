@@ -24,13 +24,13 @@ public class SpringBootAppController {
 
 
     //sends message to get invoice process started
-    @PostMapping("/invoice/{customer_id}")
-    public void collectInvoice(int customer_id) throws SQLException {
+    @GetMapping("/invoice/{customer_id}")
+    public void collectInvoice(@PathVariable int customer_id) {
         if(customer_id == Integer.MIN_VALUE){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
         try {
-            messageService.sendMessage("data_collector", "" +customer_id, ""+customer_id);
+            messageService.sendMessage("spring_app", ""+customer_id);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

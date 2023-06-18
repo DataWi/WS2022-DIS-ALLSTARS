@@ -14,18 +14,19 @@ public class DistpatchingController {
     private static DatabaseService databaseService = new DatabaseService();
     public void run() throws IOException, TimeoutException {
             String[] subscribedTo=new String[1];
-            subscribedTo[0] = "customer_id";
+            subscribedTo[0] = "dispatch";
             messageService.listen(subscribedTo);
     }
-    public static void dispatch(int customerId) throws Exception {
+    public static void dispatch(String customerId) throws Exception {
         ArrayList<Station> stations = databaseService.getStations();
         messageService.sendMessage("collection_receiver", "start", ""+customerId);
         stations.forEach(station -> {
             try {
-                messageService.sendMessage("data_collector", station.getDb_url() + "" + customerId, ""+customerId);
+                messageService.sendMessage("data_collector", station.getDb_url(), ""+customerId);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         });
+        messageService.sendMessage("data_collector", "end", ""+customerId);
     }
 }
