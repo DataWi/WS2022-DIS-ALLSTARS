@@ -18,6 +18,7 @@ import java.util.concurrent.TimeoutException;
 public class PDFGeneratorController {
     private static MessageService messageService = new MessageService();
     private static DatabaseService databaseService = new DatabaseService();
+    private static Print print = null;
     public static void run() throws IOException, TimeoutException {
         String[] subscribe = new String[1];
         subscribe[0] = "pdf_service";
@@ -26,7 +27,7 @@ public class PDFGeneratorController {
 
     public static void print(String[] message) throws SQLException, DocumentException, FileNotFoundException {
         Customer customer;
-        Print print = null;
+
         if (message[0].equals("start")) {
             customer = databaseService.getCustomer(message[1]);
             print = new Print(customer, new ArrayList<>());

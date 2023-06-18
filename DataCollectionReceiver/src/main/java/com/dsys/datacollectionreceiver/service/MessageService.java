@@ -48,7 +48,7 @@ public class MessageService {
             String[] message_info = message.split(" ");
             System.out.println(" [x] Received '" + message + "'");
             try {
-                StationDataController.collect(message_info[0], message_info[1]);
+                StationDataController.collect(message_info);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

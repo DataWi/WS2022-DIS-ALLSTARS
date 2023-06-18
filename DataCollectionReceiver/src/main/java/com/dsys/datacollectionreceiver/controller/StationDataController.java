@@ -20,28 +20,25 @@ public class StationDataController {
         subscribe[0] = "collection_receiver";
         messageService.listen(subscribe);
     }
-    public static void collect(String id, String message) throws Exception {
-    if(message.equals("start")) customerStationData = new CustomerStationData(id, new ArrayList<>());
-    else if(message.equals("end")) {
+    public static void collect(String message[]) throws Exception {
+    if(message[1].equals("start")) customerStationData = new CustomerStationData(message[0], new ArrayList<>());
+
+    else if(message[1].equals("finished")) {
         messageService.sendMessage("pdf_service", "start " + customerStationData.getCustomer_id());
         customerStationData.getStations().forEach(station -> {
-            String data = String.join(" ", station.getKwh());
             try {
-                messageService.sendMessage("pdf_service", station.getId() + " " + data);
+                messageService.sendMessage("pdf_service", station.getId() + " " + station.getKwh());
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         });
-        messageService.sendMessage("pdf_service", "end" + customerStationData.getCustomer_id());
-    } else {
-        customerStationData.getStations().forEach(station -> {
-           if ( station.getId().equals(id)) station.getKwh().add(message);
-           else {
-               Station newStation = new Station(id, new ArrayList<>());
-               newStation.getKwh().add(message);
-               customerStationData.getStations().add(newStation);
-           }
-        });
+        messageService.sendMessage("pdf_service", "end " + customerStationData.getCustomer_id());
+    }
+
+    else {
+        Station newStation = new Station(message[1], message[2]);
+        customerStationData.getStations().add(newStation);
     }
     }
+
 }

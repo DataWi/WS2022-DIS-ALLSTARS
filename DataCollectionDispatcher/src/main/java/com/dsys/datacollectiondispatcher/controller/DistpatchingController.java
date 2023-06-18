@@ -19,14 +19,14 @@ public class DistpatchingController {
     }
     public static void dispatch(String customerId) throws Exception {
         ArrayList<Station> stations = databaseService.getStations();
-        messageService.sendMessage("collection_receiver", "start", ""+customerId);
+        messageService.sendMessage("collection_receiver", "start", customerId);
         stations.forEach(station -> {
             try {
-                messageService.sendMessage("data_collector", station.getDb_url(), ""+customerId);
+                messageService.sendMessage("data_collector", station.getDb_url(), customerId);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         });
-        messageService.sendMessage("data_collector", "end", ""+customerId);
+        messageService.sendMessage("data_collector", "end", customerId);
     }
 }

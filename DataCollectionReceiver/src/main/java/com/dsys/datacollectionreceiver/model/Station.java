@@ -12,5 +12,5 @@ public class Station {
     private String id;
 
     @Getter @Setter
-    private ArrayList<String> kwh;
+    private String kwh;
 }

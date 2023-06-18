@@ -13,22 +13,29 @@ import java.util.concurrent.TimeoutException;
 public class CollectionController {
     private static DatabaseService databaseService = new DatabaseService();
     private static MessageService messageService = new MessageService();
+    private static int index = 1;
     public static void run() throws IOException, TimeoutException {
         String[] subscribe = new String[1];
         subscribe[0] = "data_collector";
         messageService.listen(subscribe);
     }
-    public static void collect(String customer_id ,String url) throws SQLException {
-        ArrayList<Station> stations =  databaseService.getStations(customer_id, url);
-        stations.forEach(station -> {
-            try {
-                messageService.sendMessage("collection_receiver", station.getId() + " " +station.getKwh(), customer_id);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        });
+    public static void collect(String customer_id ,String message) throws SQLException {
+        ArrayList<Station> stations = null;
+        if(message.equals("end")) finalize(customer_id);
+        else stations =  databaseService.getStations(customer_id, message);
+        if(stations != null) {
+            stations.forEach(station -> {
+                try {
+                    messageService.sendMessage("collection_receiver", index +  " " + station.getKwh(), customer_id);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
+            index++;
+        }
     };
     public static void finalize(String customer_id) {
+        index = 1;
         try {
             messageService.sendMessage("collection_receiver", "finished", customer_id);
         } catch (Exception e) {
