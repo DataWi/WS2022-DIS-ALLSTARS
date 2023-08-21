@@ -2,11 +2,20 @@ package com.dsys.springbootapp.controller;
 
 import com.dsys.springbootapp.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+
+import java.io.FileNotFoundException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.SQLException;
+import java.util.Base64;
 
 @RestController
 @RequestMapping("api/v1")
@@ -15,16 +24,10 @@ public class SpringBootAppController {
     @Autowired
     private static MessageService messageService = new MessageService();
 
-    //gets file from storage
-    @GetMapping("/invoices/{invoice_id}")
-    public String getInvoice(@PathVariable int invoice_id){
-        return "Invoice is retreived, please wait until download";
-        //was muss hier sonst noch passieren? anbindung an invoice db nehme ich an
-    }
-
 
     //sends message to get invoice process started
-    @GetMapping("/invoice/{customer_id}")
+    @PostMapping("/invoice/{customer_id}")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public void collectInvoice(@PathVariable int customer_id) {
         if(customer_id == Integer.MIN_VALUE){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
@@ -34,6 +37,30 @@ public class SpringBootAppController {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    //gets invoice file from storage
+    @GetMapping("/invoices/{customer_id}")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    public ResponseEntity getInvoice(@PathVariable int customer_id) throws FileNotFoundException {
+        try{
+            Path path = Paths.get("../PDFGenerator/src/main/java/com.disys.pdfgenerator/" + "Invoice" + customer_id + ".pdf");
+            Resource invoice = new UrlResource(path.toUri());
+
+            if (!invoice.exists()) {
+                throw new FileNotFoundException("Invoice not found");
+            }
+
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + invoice.getFilename() + "\"")
+                    .body(Base64.getEncoder().encode(invoice.getContentAsByteArray()));
+
+
+        }catch (Exception e){
+            return ResponseEntity.notFound().build();
+        }
+
+
     }
 
 

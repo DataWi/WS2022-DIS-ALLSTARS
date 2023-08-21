@@ -43,7 +43,7 @@ public class PDFGeneratorController {
 
     public static void generate(Print print) throws FileNotFoundException, DocumentException {
         Document document = new Document();
-        PdfWriter.getInstance(document, new FileOutputStream("Invoice " + print.getCustomer().getLast_name()+ ".pdf"));
+        PdfWriter.getInstance(document, new FileOutputStream("Invoice" + print.getCustomer().getCustomer_id()+ ".pdf"));
         String spacing = "        ";
 
         document.open();
