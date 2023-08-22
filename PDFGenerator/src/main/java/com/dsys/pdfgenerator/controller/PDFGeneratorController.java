@@ -51,14 +51,25 @@ public class PDFGeneratorController {
         Font subHeader = FontFactory.getFont(FontFactory.COURIER, 25, BaseColor.BLACK);
         Font font = FontFactory.getFont(FontFactory.COURIER, 16, BaseColor.BLACK);
         String line = "Invoice for " + print.getCustomer().getFirst_name() + " " + print.getCustomer().getLast_name();
-        Chunk chunk = new Chunk(spacing + spacing + line, header);
+        Chunk chunk = new Chunk(line, header);
 
         document.add(chunk);
+        document.add(new Paragraph("\n"));
+        document.add(new Paragraph("\n"));
+        document.add(new Paragraph("\n"));
+
 
         print.getBillings().forEach(billing -> {
-           Chunk billingHeading = new Chunk("Billings for station " + billing.getStation_id(), subHeader);
+            int current_id = 0;
+
+            Chunk billingHeading = new Chunk("Billings for station " + billing.getStation_id(), subHeader);
+
             try {
-                document.add(billingHeading);
+                if(current_id < Integer.valueOf(billing.getStation_id())){
+                    document.add(billingHeading);
+                    document.add(new Paragraph("\n"));
+                    document.add(new Paragraph("\n"));
+                }
             } catch (DocumentException e) {
                 throw new RuntimeException(e);
             }
@@ -66,7 +77,13 @@ public class PDFGeneratorController {
             billing.getKwh().forEach(kwh -> {
                 Chunk amount = new Chunk(spacing + kwh, font);
                 try {
+                    document.add(new Paragraph("\n"));
+                } catch (DocumentException e) {
+                    throw new RuntimeException(e);
+                }
+                try {
                     document.add(amount);
+                    document.add(new Paragraph("\n"));
                 } catch (DocumentException e) {
                     throw new RuntimeException(e);
                 }
@@ -74,6 +91,8 @@ public class PDFGeneratorController {
 
         });
 
+        document.add(new Paragraph("\n"));
+        document.add(new Paragraph("\n"));
 
         document.close();
 

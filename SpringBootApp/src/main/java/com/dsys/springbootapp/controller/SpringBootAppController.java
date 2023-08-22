@@ -19,7 +19,6 @@ public class SpringBootAppController {
     @GetMapping("/invoices/{invoice_id}")
     public String getInvoice(@PathVariable int invoice_id){
         return "Invoice is retreived, please wait until download";
-        //was muss hier sonst noch passieren? anbindung an invoice db nehme ich an
     }
 
 
