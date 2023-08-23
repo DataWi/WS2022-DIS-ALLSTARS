@@ -1,6 +1,7 @@
 package com.dsys.springbootapp.controller;
 
 import com.dsys.springbootapp.service.MessageService;
+import com.dsys.springbootapp.controller.PostBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -14,7 +15,6 @@ import org.springframework.web.server.ResponseStatusException;
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.SQLException;
 import java.util.Base64;
 
 @RestController
@@ -26,9 +26,11 @@ public class SpringBootAppController {
 
 
     //sends message to get invoice process started
-    @PostMapping("/invoice/{customer_id}")
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
-    public void collectInvoice(@PathVariable int customer_id) {
+    @PostMapping("/invoice")
+    @CrossOrigin(origins = "", allowedHeaders = "")
+    public void collectInvoice(@RequestBody PostBody customer) {
+        int customer_id = customer.getCustomer_id();
+
         if(customer_id == Integer.MIN_VALUE){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
@@ -41,8 +43,8 @@ public class SpringBootAppController {
 
     //gets invoice file from storage
     @GetMapping("/invoices/{customer_id}")
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
-    public ResponseEntity getInvoice(@PathVariable int customer_id) throws FileNotFoundException {
+    @CrossOrigin(origins = "", allowedHeaders = "*")
+    public ResponseEntity getInvoice(@PathVariable int customer_id) {
         try{
             Path path = Paths.get("../PDFGenerator/src/main/java/com.disys.pdfgenerator/" + "Invoice" + customer_id + ".pdf");
             Resource invoice = new UrlResource(path.toUri());
@@ -62,9 +64,5 @@ public class SpringBootAppController {
 
 
     }
-
-
-
-
 
 }
