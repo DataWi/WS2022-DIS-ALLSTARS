@@ -46,7 +46,7 @@ public class SpringBootAppController {
     @CrossOrigin(origins = "", allowedHeaders = "*")
     public ResponseEntity getInvoice(@PathVariable int customer_id) {
         try{
-            Path path = Paths.get("../PDFGenerator/" + "Invoice" + customer_id + ".pdf");
+            Path path = Paths.get("../" + "Invoice" + customer_id + ".pdf");
             Resource invoice = new UrlResource(path.toUri());
 
             if (!invoice.exists()) {

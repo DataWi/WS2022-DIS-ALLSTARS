@@ -43,14 +43,14 @@ public class PDFGeneratorController {
 
     public static void generate(Print print) throws FileNotFoundException, DocumentException {
         Document document = new Document();
-        PdfWriter.getInstance(document, new FileOutputStream("Invoice" + print.getCustomer().getCustomer_id()+ ".pdf"));
+        PdfWriter.getInstance(document, new FileOutputStream("Invoice" + print.getCustomer().getCustomer_id() + ".pdf"));
         String spacing = "        ";
 
         document.open();
         Font header = FontFactory.getFont(FontFactory.COURIER, 32, BaseColor.BLACK);
         Font subHeader = FontFactory.getFont(FontFactory.COURIER, 25, BaseColor.BLACK);
         Font font = FontFactory.getFont(FontFactory.COURIER, 16, BaseColor.BLACK);
-        String line = "Invoice for " + print.getCustomer().getFirst_name() + " " + print.getCustomer().getLast_name();
+        String line = "Invoice for " + print.getCustomer().getFirst_name() + " " + print.getCustomer().getLast_name() + "/n";
         Chunk chunk = new Chunk(spacing + spacing + line, header);
 
         document.add(chunk);
@@ -64,7 +64,8 @@ public class PDFGeneratorController {
             }
 
             billing.getKwh().forEach(kwh -> {
-                Chunk amount = new Chunk(spacing + kwh, font);
+                String amountText = spacing + kwh + "\n";
+                Chunk amount = new Chunk(amountText);
                 try {
                     document.add(amount);
                 } catch (DocumentException e) {
