@@ -38,7 +38,7 @@ class SpringBootAppControllerTest {
     void testGetInvoice() throws Exception {
         // Setup
         // Run the test
-        final MockHttpServletResponse response = mockMvc.perform(get("http://localhost:8080/api/v1/invoices/{customer_id}", 2)
+        final MockHttpServletResponse response = mockMvc.perform(get("http://localhost:8080/api/v1/invoices/2")
                         .accept(MediaType.APPLICATION_JSON))
                 .andReturn().getResponse();
 

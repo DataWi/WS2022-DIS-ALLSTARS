@@ -7,6 +7,7 @@
       <module fileurl="file://$PROJECT_DIR$/PDFGenerator/PDFGenerator.iml" filepath="$PROJECT_DIR$/PDFGenerator/PDFGenerator.iml" />
       <module fileurl="file://$PROJECT_DIR$/SpringBootApp/SpringBootApp.iml" filepath="$PROJECT_DIR$/SpringBootApp/SpringBootApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/StationDataCollector/StationDataCollector.iml" filepath="$PROJECT_DIR$/StationDataCollector/StationDataCollector.iml" />
+      <module fileurl="file://$PROJECT_DIR$/StationUI/StationUI.iml" filepath="$PROJECT_DIR$/StationUI/StationUI.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/WS2022-DIS-ALLSTARS.iml" filepath="$PROJECT_DIR$/.idea/WS2022-DIS-ALLSTARS.iml" />
     </modules>
   </component>

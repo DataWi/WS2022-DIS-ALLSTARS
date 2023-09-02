@@ -33,7 +33,7 @@ public class TankstellenUIController {
 
          try {
              var request = HttpRequest.newBuilder()
-                     .uri(URI.create("http://localhost:8080/api/v1/invoices"))
+                     .uri(URI.create("http://localhost:8080/api/v1/invoice"))
                      .header("Content-Type","application/json")
                      .POST(HttpRequest.BodyPublishers.ofString(customerIDField.getText())).build();
              var response = HttpClient.newHttpClient()

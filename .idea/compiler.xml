@@ -11,6 +11,7 @@
         <module name="StationDataCollector" />
         <module name="DataCollectionDispatcher" />
         <module name="DataCollectionReceiver" />
+        <module name="StationUI" />
         <module name="PDFGenerator" />
       </profile>
     </annotationProcessing>
@@ -20,6 +21,7 @@
       <module name="PDFGenerator" target="17" />
       <module name="SpringBootApp" target="17" />
       <module name="StationDataCollector" target="17" />
+      <module name="StationUI" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

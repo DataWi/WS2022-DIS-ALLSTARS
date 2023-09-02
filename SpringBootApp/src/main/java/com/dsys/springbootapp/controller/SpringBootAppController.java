@@ -1,7 +1,6 @@
 package com.dsys.springbootapp.controller;
 
 import com.dsys.springbootapp.service.MessageService;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -28,7 +27,7 @@ public class SpringBootAppController {
     //sends message to get invoice process started
     @PostMapping(value = "/invoice", consumes = "application/json")
     @CrossOrigin(origins = "", allowedHeaders = "")
-    public void collectInvoice(@RequestBody @NotNull int customer_id) {
+    public void collectInvoice(@RequestBody int customer_id) {
 
         if(customer_id == Integer.MIN_VALUE){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
@@ -46,7 +45,7 @@ public class SpringBootAppController {
     public ResponseEntity getInvoice(@PathVariable int customer_id)  {
         // if customer_id is not a number
 
-        String sourcePath = "../PDFGenerator/" + "Invoice " + customer_id + ".pdf";
+        String sourcePath = "Invoice " + customer_id + ".pdf";
         Path path = null;
         try {
             path = Paths.get(sourcePath);
@@ -55,7 +54,6 @@ public class SpringBootAppController {
             if (!invoice.exists()) {
                 throw new FileNotFoundException("Invoice not found");
             }
-
 
             return ResponseEntity.ok()
                     .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + invoice.getFilename() + "\"")
