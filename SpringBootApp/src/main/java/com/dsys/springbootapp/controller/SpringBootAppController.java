@@ -43,7 +43,9 @@ public class SpringBootAppController {
     //gets invoice file from storage
     @GetMapping("/invoices/{customer_id}")
     @CrossOrigin(origins = "", allowedHeaders = "*")
-    public ResponseEntity getInvoice(@PathVariable int customer_id) throws IOException {
+    public ResponseEntity getInvoice(@PathVariable int customer_id)  {
+        // if customer_id is not a number
+
         String sourcePath = "../PDFGenerator/" + "Invoice " + customer_id + ".pdf";
         Path path = null;
         try {
