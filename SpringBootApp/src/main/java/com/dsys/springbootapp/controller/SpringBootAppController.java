@@ -43,7 +43,6 @@ public class SpringBootAppController {
     @GetMapping("/invoices/{customer_id}")
     @CrossOrigin(origins = "", allowedHeaders = "*")
     public ResponseEntity getInvoice(@PathVariable int customer_id)  {
-        // if customer_id is not a number
 
         String sourcePath = "Invoice " + customer_id + ".pdf";
         Path path = null;
@@ -56,7 +55,8 @@ public class SpringBootAppController {
             }
 
             return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + invoice.getFilename() + "\"")
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "filename=\"" + invoice.getFilename() + "\"")
+                    .header("Content-Encoding", "base64")
                     .body(Base64.getEncoder().encode(invoice.getContentAsByteArray()));
 
         } catch (Exception e) {

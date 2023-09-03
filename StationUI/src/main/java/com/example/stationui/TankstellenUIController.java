@@ -13,7 +13,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-
+import java.util.Base64;
 
 
 public class TankstellenUIController {
@@ -50,10 +50,8 @@ public class TankstellenUIController {
 
     @FXML
     private void onButtonDownloadPDFClicked(ActionEvent event) {
-
         String customerID = customerIDField.getText();
-
-        String fileName = "Invoice " + customerID + ".pdf";
+        String fileName = "Invoice_" + customerID + ".pdf";
 
         try {
             HttpRequest request = HttpRequest.newBuilder()
@@ -64,37 +62,45 @@ public class TankstellenUIController {
                     .send(request, HttpResponse.BodyHandlers.ofInputStream());
 
             if (response.statusCode() == 200) {
+                String contentEncoding = response.headers().firstValue("Content-Encoding").orElse("");
+                if (!"base64".equals(contentEncoding)) {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setContentText("Unexpected Content-Encoding: " + contentEncoding);
+                    alert.showAndWait();
+                    return;
+                }
+
+                byte[] base64Data = response.body().readAllBytes();
+                byte[] decodedBytes = Base64.getDecoder().decode(new String(base64Data));
 
                 String userHome = System.getProperty("user.home");
-
                 String downloadFolderPath = userHome + File.separator + "Downloads";
-
                 String downloadFilePath = downloadFolderPath + File.separator + fileName;
 
-                try (BufferedInputStream inputStream = new BufferedInputStream(response.body());
-                     FileOutputStream fileOutputStream = new FileOutputStream(downloadFilePath)) {
-
-                    byte[] buffer = new byte[1024];
-                    int bytesRead;
-                    while ((bytesRead = inputStream.read(buffer)) != -1) {
-                        fileOutputStream.write(buffer, 0, bytesRead);
-                    }
+                try (FileOutputStream fileOutputStream = new FileOutputStream(downloadFilePath)) {
+                    fileOutputStream.write(decodedBytes);
                 }
 
                 Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-                successAlert.setContentText("PDF-Datei erfolgreich heruntergeladen.");
+                successAlert.setContentText("PDF file successfully downloaded.");
                 successAlert.showAndWait();
+
             } else {
                 Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-                errorAlert.setContentText("Fehler beim Herunterladen der PDF-Datei, kein Kunde mit dieser ID gefunden.");
+                errorAlert.setContentText("Error downloading the PDF file. Status code: " + response.statusCode());
                 errorAlert.showAndWait();
             }
+
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setContentText("Fehler beim Aufrufen der REST-API: \n" + e.toString());
+            alert.setContentText("An error occurred: \n" + e.toString());
             alert.showAndWait();
         }
     }
+
+
+
+
 
     public void onButtonCancelClicked(ActionEvent actionEvent) {
         System.exit(0);

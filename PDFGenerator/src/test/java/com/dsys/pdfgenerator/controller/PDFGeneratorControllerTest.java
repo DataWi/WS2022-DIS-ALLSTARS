@@ -38,6 +38,7 @@ class PDFGeneratorControllerTest {
         PDFGeneratorController.generate(print);
 
         // Verify the results
+
     }
 
 }

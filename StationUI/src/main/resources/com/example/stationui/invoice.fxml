@@ -6,7 +6,7 @@
 
 
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="252.0" prefWidth="315.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.stationui.TankstellenUIController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="260.0" prefWidth="315.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.stationui.TankstellenUIController">
     <children>
         <ImageView fitHeight="152.0" fitWidth="286.0" layoutX="15.0" layoutY="39.0" pickOnBounds="true" preserveRatio="true">
             <image>
