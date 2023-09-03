@@ -4,17 +4,16 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-
-
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="225.0" prefWidth="315.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.stationui.TankstellenUIController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="252.0" prefWidth="315.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.stationui.TankstellenUIController">
     <children>
-        <ImageView fitHeight="152.0" fitWidth="286.0" layoutX="15.0" layoutY="39.0" pickOnBounds="true" preserveRatio="true">
+        <ImageView fitHeight="172.0" fitWidth="286.0" layoutX="15.0" layoutY="39.0" pickOnBounds="true" preserveRatio="true">
             <image>
                 <Image url="@e_fuel.png" />
             </image></ImageView>
 
-        <TextField layoutX="21.0" layoutY="227.0" prefHeight="25.0" prefWidth="152.0" fx:id="customerIDField" promptText="Please enter your ID" />
+        <TextField fx:id="customerIDField" layoutX="21.0" layoutY="227.0" prefHeight="25.0" prefWidth="152.0" promptText="Please enter your ID" />
         <Button fx:id="onButtonGenerateInvoiceClicked" layoutX="190.0" layoutY="227.0" mnemonicParsing="false" onAction="#onButtonGenerateInvoiceClicked" text="Generate Invoice" />
+        <Button fx:id="onButtonDownloadPDFClicked" layoutX="190.0" layoutY="227.0" mnemonicParsing="false" onAction="#onButtonDownloadPDFClicked" text="Download Invoice" />
         <AnchorPane layoutX="52.0" layoutY="39.0" />
         <Button layoutX="190.0" layoutY="260.0" mnemonicParsing="false" onAction="#onButtonCancelClicked" text="Cancel" />
     </children>
